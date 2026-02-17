@@ -4,7 +4,7 @@ Rule-based stoploss evaluator for a single stock record.
 
 from __future__ import annotations
 
-from typing import Dict, Union, Any
+from typing import Any, Dict, Union
 
 
 def evaluate_rule(
