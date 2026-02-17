@@ -28,9 +28,9 @@ def _evaluate_rule(
     base_index: float,
     index_close: float,
 ) -> Dict[str, float | str]:
-    stock_down = _down_percent(base_price, close)
-    index_down = _down_percent(base_index, index_close)
-    relative_down = max(stock_down - index_down, 0.0)
+    stock_down = max(0.0, _down_percent(base_price, close))
+    index_down = max(0.0, _down_percent(base_index, index_close))
+    relative_down = max(0.0, stock_down - index_down)
     threshold_price = base_price * 0.90
 
     return {
