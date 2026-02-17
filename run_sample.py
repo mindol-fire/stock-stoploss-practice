@@ -21,7 +21,7 @@ def main() -> None:
     sample_text = sample_path.read_text(encoding="utf-8")
     stocks = json.loads(sample_text)
 
-    headers = [
+    table_headers = [
         "ticker",
         "market",
         "rule",
@@ -50,7 +50,7 @@ def main() -> None:
                 ]
             )
 
-    widths = [len(h) for h in headers]
+    widths = [len(h) for h in table_headers]
     for row in rows:
         for idx, col in enumerate(row):
             widths[idx] = max(widths[idx], len(col))
@@ -58,7 +58,7 @@ def main() -> None:
     def format_row(row: list[str]) -> str:
         return " | ".join(cell.ljust(widths[i]) for i, cell in enumerate(row))
 
-    print(format_row(headers))
+    print(format_row(table_headers))
     print("-+-".join("-" * w for w in widths))
     for row in rows:
         print(format_row(row))

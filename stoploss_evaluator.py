@@ -4,22 +4,6 @@ from __future__ import annotations
 
 from typing import Dict
 
-THRESHOLD_PERCENT = 10.0
-
-
-def _down_percent(reference: float, current: float) -> float:
-    """Return percent drawdown from reference to current."""
-    return ((reference - current) / reference) * 100.0
-
-
-def _status(stock_down: float, relative_down: float) -> str:
-    """Return status based on stoploss rules."""
-    if stock_down < THRESHOLD_PERCENT:
-        return "OK"
-    if relative_down >= THRESHOLD_PERCENT:
-        return "HARD_STOP"
-    return "MARKET_DRIVEN_ALERT"
-
 
 def _evaluate_rule(
     *,
@@ -28,17 +12,24 @@ def _evaluate_rule(
     base_index: float,
     index_close: float,
 ) -> Dict[str, float | str]:
-    stock_down = max(0.0, _down_percent(base_price, close))
-    index_down = max(0.0, _down_percent(base_index, index_close))
+    stock_down = max(0.0, ((base_price - close) / base_price) * 100.0)
+    index_down = max(0.0, ((base_index - index_close) / base_index) * 100.0)
     relative_down = max(0.0, stock_down - index_down)
     threshold_price = base_price * 0.90
+
+    if stock_down < 10:
+        status = "OK"
+    elif relative_down >= 10:
+        status = "HARD_STOP"
+    else:
+        status = "MARKET_DRIVEN_ALERT"
 
     return {
         "stock_down": stock_down,
         "index_down": index_down,
         "relative_down": relative_down,
         "threshold_price": threshold_price,
-        "status": _status(stock_down, relative_down),
+        "status": status,
     }
 
 
