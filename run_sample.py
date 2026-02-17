@@ -18,7 +18,8 @@ def _fmt_price(value: float) -> str:
 
 def main() -> None:
     sample_path = Path(__file__).with_name("sample_inputs.json")
-    stocks = json.loads(sample_path.read_text(encoding="utf-8"))
+    sample_text = sample_path.read_text(encoding="utf-8")
+    stocks = json.loads(sample_text)
 
     headers = [
         "ticker",
