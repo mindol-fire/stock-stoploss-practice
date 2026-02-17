@@ -7,7 +7,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from stoploss_evaluator import evaluate_stock
+from stoploss_evaluator_clean import evaluate_stock
 
 
 def fmt_pct(value: float) -> str:
