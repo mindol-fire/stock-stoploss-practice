@@ -43,11 +43,11 @@ def main() -> None:
                     result["ticker"],
                     result["market"],
                     rule,
-                    fmt_pct(item["stock_down"]),
-                    fmt_pct(item["index_down"]),
-                    fmt_pct(item["relative_down"]),
-                    fmt_price(item["threshold_price"]),
-                    item["status"],
+                    fmt_pct(float(item["stock_down"])),
+                    fmt_pct(float(item["index_down"])),
+                    fmt_pct(float(item["relative_down"])),
+                    fmt_price(float(item["threshold_price"])),
+                    str(item["status"]),
                 ]
             )
 
