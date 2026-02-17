@@ -1,4 +1,6 @@
-"""Run stoploss evaluator against sample_inputs.json and print a table."""
+"""
+Run stoploss evaluator against sample_inputs.json and print a table.
+"""
 
 from __future__ import annotations
 
@@ -8,18 +10,17 @@ from pathlib import Path
 from stoploss_evaluator import evaluate_stock
 
 
-def _fmt_pct(value: float) -> str:
+def fmt_pct(value: float) -> str:
     return f"{value:.2f}%"
 
 
-def _fmt_price(value: float) -> str:
+def fmt_price(value: float) -> str:
     return f"{value:.2f}"
 
 
 def main() -> None:
     sample_path = Path(__file__).with_name("sample_inputs.json")
-    sample_text = sample_path.read_text(encoding="utf-8")
-    stocks = json.loads(sample_text)
+    stocks = json.loads(sample_path.read_text(encoding="utf-8"))
 
     headers = [
         "ticker",
@@ -42,21 +43,21 @@ def main() -> None:
                     result["ticker"],
                     result["market"],
                     rule,
-                    _fmt_pct(item["stock_down"]),
-                    _fmt_pct(item["index_down"]),
-                    _fmt_pct(item["relative_down"]),
-                    _fmt_price(item["threshold_price"]),
-                    item["status"],
+                    fmt_pct(float(item["stock_down"])),
+                    fmt_pct(float(item["index_down"])),
+                    fmt_pct(float(item["relative_down"])),
+                    fmt_price(float(item["threshold_price"])),
+                    str(item["status"]),
                 ]
             )
 
     widths = [len(h) for h in headers]
     for row in rows:
-        for idx, col in enumerate(row):
-            widths[idx] = max(widths[idx], len(col))
+        for i, cell in enumerate(row):
+            widths[i] = max(widths[i], len(cell))
 
     def format_row(row: list[str]) -> str:
-        return " | ".join(cell.ljust(widths[i]) for i, cell in enumerate(row))
+        return " | ".join(row[i].ljust(widths[i]) for i in range(len(headers)))
 
     print(format_row(headers))
     print("-+-".join("-" * w for w in widths))
